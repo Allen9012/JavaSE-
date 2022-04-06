@@ -50,9 +50,9 @@ public class UserClientService {
                 //启动客户端的线程
                 clientConnectServerThread.start();
                 //这里为了后面客户端的扩展，我们将线程放入到集合管理
-                 ManageClientConnectServerThread.addClientConnectServerThread(userId, clientConnectServerThread);
+                ManageClientConnectServerThread.addClientConnectServerThread(userId, clientConnectServerThread);
                 //做完再设置true安全
-                 b = true;
+                b = true;
 
             } else {
                 //登陆失败的话就不能启动和服务器通信的线程
@@ -65,7 +65,7 @@ public class UserClientService {
         return b;
     }
 
-    public  void onlineFriendList(){
+    public void onlineFriendList() {
         //发送Message，类型是   MESSAGE_GET_ONLINE_FRIEND="4"
         Message message = new Message();
         message.setMesType(MessageType.MESSAGE_GET_ONLINE_FRIEND);
@@ -90,4 +90,23 @@ public class UserClientService {
         }
     }
 
+    public void logout() {
+        Message message = new Message();
+        message.setMesType(MessageType.MESSAGE_CLIENT_EXIT);
+        message.setSender(u.getUserId());
+
+        //发送信息
+        try {
+            //最好不要这么写，这个只有一个线程
+            //ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectOutputStream oos =
+                    new ObjectOutputStream(ManageClientConnectServerThread.getClientConnectServerThread(u.getUserId()).getSocket().getOutputStream());
+            oos.writeObject(message);//发送信息
+            System.out.println(u.getUserId()+"退出系统 ");
+            //网络慢还是可能报错
+            System.exit(0);//结束进程
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

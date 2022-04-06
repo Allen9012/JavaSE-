@@ -1,5 +1,7 @@
 package com.Allen.view;
 
+import com.Allen.common.MessageType;
+import com.Allen.service.MessageClientService;
 import com.Allen.service.UserClientService;
 import com.Allen.utils.Utility;
 
@@ -14,7 +16,7 @@ public class QQView {
     private boolean loop = true;//控制是否显示菜单
     private String key = "";
     private UserClientService userClientService = new UserClientService();//用于登陆服务器和注册用户
-
+private MessageClientService messageClientService=new MessageClientService();//对象用户私聊/群聊
     public static void main(String[] args) {
         new QQView().mainMenu();
     }
@@ -46,7 +48,6 @@ public class QQView {
                             System.out.println("\t\t 9 退出系统");
                             System.out.print("请输入你的选择: ");
                             key = Utility.readString(1);
-                            //System.out.println("");
                             switch (key) {
                                 case "1":
                                     //这里老师准备写一个方法，来获取在线用户列表
@@ -55,7 +56,7 @@ public class QQView {
                                 case "2":
                                     System.out.println("请输入想对大家说的话: ");
                                     String s = Utility.readString(100);
-                                    //messageClientService.sendMessageToAll(s, userId);
+                                    messageClientService.sendMessageToAll(s, userId);
                                     break;
                                 case "3":
                                     System.out.print("请输入想聊天的用户号(在线): ");
@@ -63,7 +64,7 @@ public class QQView {
                                     System.out.print("请输入想说的话: ");
                                     String content = Utility.readString(100);
                                     //编写一个方法，将消息发送给服务器端
-                                    //messageClientService.sendMessageToOne(content, userId, getterId);
+                                    messageClientService.sendMessageToOne(content, userId, getterId);
                                     break;
                                 case "4":
                                     System.out.print("请输入你想把文件发送给的用户(在线用户): ");
@@ -76,7 +77,7 @@ public class QQView {
                                     break;
                                 case "9":
                                     //调用方法，给服务器发送一个退出系统的message
-                                    //userClientService.logout();
+                                    userClientService.logout();
                                     loop = false;
                                     break;
                             }
