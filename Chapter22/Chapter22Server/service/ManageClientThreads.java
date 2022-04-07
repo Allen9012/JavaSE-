@@ -14,6 +14,10 @@ import java.util.Iterator;
 public class ManageClientThreads {
     private static HashMap<String, ServerConnectClientThread> hm = new HashMap<>();
 
+    public static HashMap<String, ServerConnectClientThread> getHm() {
+        return hm;
+    }
+
     //添加线程对象到集合,静态的方便一点
     public static void addClientThread(String userId, ServerConnectClientThread serverConnectClientThread) {
 
@@ -34,6 +38,12 @@ public class ManageClientThreads {
         while (iterator.hasNext()) {
             onlineUserList += iterator.next().toString() + " ";
         }
-        return  onlineUserList;
+        return onlineUserList;
     }
+
+    //从集合中一处某一个线程对象
+    public static void removeServerConnectClientThread(String userId) {
+        hm.remove(userId);
+    }
+
 }
